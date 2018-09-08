@@ -1,14 +1,44 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Dimensions } from 'react-native';
+import { 
+  AppRegistry, 
+  StyleSheet, 
+  Text, 
+  View, 
+  TextInput, 
+  Dimensions,
+  ScrollView 
+} from 'react-native';
+
+import TasksList from './components/List'
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {newTodo: ''};
+  }
+
+  newTodoController = (value) => {
+    this.setState({newTodo: value});
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.appTitle}>To-do app!</Text>
         <View style={styles.card}>
-          <TextInput style={styles.input} placeholder="Add item!" />
+          <TextInput 
+            style={styles.input} 
+            placeholder="Add item!"
+            value={this.state.newTodo}
+            onChangeText={this.newTodoController}
+            returnKeyType={'send'} 
+            
+          />
+        <ScrollView contentContainerStyle={styles.listContainer}>
+          <TasksList/>
+        </ScrollView>
         </View>
+
       </View>
     );
   }
@@ -39,5 +69,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#bbb',
     borderBottomWidth: 1,
     fontSize: 24
+  },
+  listContainer: {
+    alignItems: 'center',
   }
 });
