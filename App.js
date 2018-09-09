@@ -22,7 +22,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       newTodoItem: '',
-      todos: {}
+      todos: {},
+      newItem: false,
     };
   }
 
@@ -30,27 +31,45 @@ export default class App extends React.Component {
     this.setState({newTodoItem: value});
   }
 
-  saveNewItem = (todos) => {
-    const saveItem = AsyncStorage.setItem('todos', JSON.stringify(todos));
-  }
-
-  loadData = async () => {
+  // This function is no longer necessary
+  _loadData = async () => {
     try{
       const getData = await AsyncStorage.getItem('todos');
       const parseData = JSON.parse(getData);
+      this.setState({newItem: false});
       this.setState({todos: parseData});
     }catch(error){
       console.log(error);
     }
   }
 
+  _storeData = async() => {
+    try{
+      let previousData;
+      try{
+        previousData = await AsyncStorage.getItem('todos');
+      }catch(error){
+        console.log(error);
+      }
+      const ID = uuidv1();
+
+      const parsedPreviousData = JSON.parse(previousData);
+      parsedPreviousData[ID] = this.state.newTodoItem;
+      
+      console.log(parsedPreviousData);
+
+      await AsyncStorage.setItem('todos', JSON.stringify(parsedPreviousData));
+      this.state.newTodoItem = '';
+
+      this.setState({todos: parsedPreviousData});
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   addItem = () => {
-    const ID = uuidv1();
-    this.state.todos[ID] = this.state.newTodoItem;
-    // this.saveNewItem(this.state.todos);
-    AsyncStorage.setItem('todos', JSON.stringify(this.state.todos));
-    this.state.newTodoItem = '';
-    console.log(this.state.todos);
+    this._storeData();
   }
 
   render() {
