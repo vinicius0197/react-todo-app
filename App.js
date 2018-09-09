@@ -99,7 +99,7 @@ export default class App extends React.Component {
             returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {Object.values(this.state.todos).map( todo => <TasksList key={todo.id} text={todo.text}/> )}
+          {Object.values(this.state.todos).map( todo => <TasksList id={todo.id} key={todo.id} text={todo.text} remove={this.removeItem}/> )}
         </ScrollView>
         </View>
 

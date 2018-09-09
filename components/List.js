@@ -35,12 +35,12 @@ export default class TasksList extends Component {
 			'Do you wish to remove this task?',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-				{text: 'Remove', onPress: () => console.log('Removed')},
+				{text: 'Remove', onPress: () => console.log(this.props.id)},
 			],
 			{ cancelable: false }
 		)
 	}
-	
+
 	render() {
 		return(
 			<View style={styles.container}>
