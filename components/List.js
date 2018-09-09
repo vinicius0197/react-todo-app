@@ -15,18 +15,10 @@ const { heigth, width } = Dimensions.get('window');
 export default class TasksList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isDone: false,
-		}
 	}
 
 	markTask = () => {
 		this.props.check(this.props.id);
-		this.setState(prevState => {
-			return{
-				isDone: !prevState.isDone
-			}
-		});
 	}
 
 	displayPrompt = () => {
@@ -45,7 +37,7 @@ export default class TasksList extends Component {
 		return(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={this.markTask} onLongPress={this.displayPrompt}>
-					<Text style={this.state.isDone ? styles.completeTask : styles.incompleteTask}> {this.props.text} </Text>
+					<Text style={this.props.done ? styles.completeTask : styles.incompleteTask}> {this.props.text} </Text>
 				</TouchableOpacity>
 			</View>
 		);
