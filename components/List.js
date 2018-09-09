@@ -30,7 +30,7 @@ export default class TasksList extends Component {
 		return(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={this.markTask}>
-					<Text style={this.state.isDone ? styles.completeTask : styles.incompleteTask}> TO DO </Text>
+					<Text style={this.state.isDone ? styles.completeTask : styles.incompleteTask}> {this.props.text} </Text>
 				</TouchableOpacity>
 			</View>
 		);

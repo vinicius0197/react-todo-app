@@ -19,47 +19,23 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newTodo: '',
-      dataIsReady: false,
+      newTodoItem: '',
       todos: {}
     };
   }
 
   newTodoController = (value) => {
-    this.setState({newTodo: value});
+    this.setState({newTodoItem: value});
   }
 
   addItem = () => {
-    const { newTodoItem } = this.state;
-
-    if(newTodoItem !== '') {
-      this.setState(prevState => {
-        const ID = uuidv1();
-        const newToDoObject = {
-          [ID]: {
-            id: ID,
-            isCompleted: false,
-            textValue: newTodoItem,
-            createdAt: Date.now()
-          }
-        };
-
-        const newState = {
-          ...prevState,
-          newTodoItem: '',
-          todos: {
-            ...prevState.todos,
-            ...newToDoObject
-          }
-        };
-
-        return {...newState};
-      });
-    }
-  };
+    const ID = uuidv1();
+    this.state.todos[ID] = this.state.newTodoItem;
+    this.state.newTodoItem = '';
+    console.log(this.state.todos);
+  }
 
   render() {
-    const { newTodo, todos } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.appTitle}>To-do app!</Text>
@@ -67,13 +43,14 @@ export default class App extends React.Component {
           <TextInput 
             style={styles.input} 
             placeholder="Add item!"
-            value={this.state.newTodo}
+            value={this.state.newTodoItem}
             onChangeText={this.newTodoController}
+            onSubmitEditing={this.addItem}
             returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {/* <TasksList text={'newTodo'}/> */}
-          {Object.values(todos).map(todo => <TasksList key={todo.id} {...todo} />)}
+          {/* <Text> {JSON.stringify(this.state.todos)} </Text> */}
+          {Object.values(this.state.todos).map( todo => <TasksList text={todo}/> )}
         </ScrollView>
         </View>
 
