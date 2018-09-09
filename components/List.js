@@ -6,7 +6,8 @@ import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
-	Dimensions
+	Dimensions,
+	Alert
 }from 'react-native';
 
 const { heigth, width } = Dimensions.get('window');
@@ -27,11 +28,15 @@ export default class TasksList extends Component {
 			}
 		})
 	}
+
+	displayPrompt = () => {
+		Alert.alert('You tapped the button!');
+	}
 	
 	render() {
 		return(
 			<View style={styles.container}>
-				<TouchableOpacity onPress={this.markTask}>
+				<TouchableOpacity onPress={this.markTask} onLongPress={this.displayPrompt}>
 					<Text style={this.state.isDone ? styles.completeTask : styles.incompleteTask}> {this.props.text} </Text>
 				</TouchableOpacity>
 			</View>
