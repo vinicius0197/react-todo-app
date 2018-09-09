@@ -73,6 +73,13 @@ export default class App extends React.Component {
     this._storeData();
   }
 
+  removeItem = (item_id) => {
+    let todo = this.state.todos;
+    let id = todo.findIndex(x => x.id === item_id);
+    todo.splice(id, 1);
+    this.setState({todos: todo});
+  }
+
   componentDidMount() {
     // Initialize previous to-do items in list
     this._loadData();
