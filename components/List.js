@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
 		fontWeight: '500',
 		fontSize: 18,
 		marginVertical: 20,
-		color: '#D3D3D3'
+		color: '#D3D3D3',
+		textDecorationLine: 'line-through'
 	}
 });
