@@ -1,6 +1,8 @@
 import React from 'react';
 import uuidv1 from 'uuid/v1';
 
+import {AsyncStorage} from 'react-native'
+
 import './ReactotronConfig'
 
 import { 
@@ -28,9 +30,25 @@ export default class App extends React.Component {
     this.setState({newTodoItem: value});
   }
 
+  saveNewItem = (todos) => {
+    const saveItem = AsyncStorage.setItem('todos', JSON.stringify(todos));
+  }
+
+  loadData = async () => {
+    try{
+      const getData = await AsyncStorage.getItem('todos');
+      const parseData = JSON.parse(getData);
+      this.setState({todos: parseData});
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   addItem = () => {
     const ID = uuidv1();
     this.state.todos[ID] = this.state.newTodoItem;
+    // this.saveNewItem(this.state.todos);
+    AsyncStorage.setItem('todos', JSON.stringify(this.state.todos));
     this.state.newTodoItem = '';
     console.log(this.state.todos);
   }
@@ -49,7 +67,6 @@ export default class App extends React.Component {
             returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {/* <Text> {JSON.stringify(this.state.todos)} </Text> */}
           {Object.values(this.state.todos).map( todo => <TasksList text={todo}/> )}
         </ScrollView>
         </View>
