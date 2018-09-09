@@ -73,11 +73,18 @@ export default class App extends React.Component {
     this._storeData();
   }
 
-  removeItem = (item_id) => {
+  removeItem = async (item_id) => {
     let todo = this.state.todos;
     let id = todo.findIndex(x => x.id === item_id);
     todo.splice(id, 1);
     this.setState({todos: todo});
+
+    try{
+      await AsyncStorage.setItem('todo', JSON.stringify(todo));
+    }catch(error){
+      console.log(error);
+    }
+
     console.log('Removing item...');
   }
 
