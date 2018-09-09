@@ -78,6 +78,7 @@ export default class App extends React.Component {
     let id = todo.findIndex(x => x.id === item_id);
     todo.splice(id, 1);
     this.setState({todos: todo});
+    console.log('Removing item...');
   }
 
   componentDidMount() {
