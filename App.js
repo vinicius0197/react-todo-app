@@ -31,10 +31,9 @@ export default class App extends React.Component {
     this.setState({newTodoItem: value});
   }
 
-  // This function is no longer necessary
   _loadData = async () => {
     try{
-      const getData = await AsyncStorage.getItem('todos');
+      const getData = await AsyncStorage.getItem('todo');
       const parseData = JSON.parse(getData);
       this.setState({newItem: false});
       this.setState({todos: parseData});
@@ -51,23 +50,18 @@ export default class App extends React.Component {
       }catch(error){
         console.log(error);
       }
-
       const ID = uuidv1();
-
       const parsedPreviousData = JSON.parse(previousData);
-
       newObject = {
         id: ID,
         text: this.state.newTodoItem,
       }
-
       parsedPreviousData.push(newObject);
       
       console.log(parsedPreviousData);
 
       await AsyncStorage.setItem('todo', JSON.stringify(parsedPreviousData));
       this.state.newTodoItem = '';
-
       this.setState({todos: parsedPreviousData});
 
     }catch(error){
@@ -75,14 +69,13 @@ export default class App extends React.Component {
     }
   }
 
-  addItem = async () => {
-    try{
-      list = '[]';
-      await AsyncStorage.setItem('todo', list);
-    }catch(error){
-      console.log(error);
-    }
+  addItem = () => {
     this._storeData();
+  }
+
+  componentDidMount() {
+    // Initialize previous to-do items in list
+    this._loadData();
   }
 
   render() {
