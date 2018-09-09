@@ -30,7 +30,15 @@ export default class TasksList extends Component {
 	}
 
 	displayPrompt = () => {
-		Alert.alert('You tapped the button!');
+		Alert.alert(
+			'Remove task?',
+			'Do you wish to remove this task?',
+			[
+				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: 'Remove', onPress: () => console.log('Removed')},
+			],
+			{ cancelable: false }
+		)
 	}
 	
 	render() {
