@@ -22,7 +22,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       newTodoItem: '',
-      todos: {},
+      todos: [],
       newItem: false,
     };
   }
@@ -47,18 +47,25 @@ export default class App extends React.Component {
     try{
       let previousData;
       try{
-        previousData = await AsyncStorage.getItem('todos');
+        previousData = await AsyncStorage.getItem('todo');
       }catch(error){
         console.log(error);
       }
+
       const ID = uuidv1();
 
       const parsedPreviousData = JSON.parse(previousData);
-      parsedPreviousData[ID] = this.state.newTodoItem;
+
+      newObject = {
+        id: ID,
+        text: this.state.newTodoItem,
+      }
+
+      parsedPreviousData.push(newObject);
       
       console.log(parsedPreviousData);
 
-      await AsyncStorage.setItem('todos', JSON.stringify(parsedPreviousData));
+      await AsyncStorage.setItem('todo', JSON.stringify(parsedPreviousData));
       this.state.newTodoItem = '';
 
       this.setState({todos: parsedPreviousData});
@@ -68,7 +75,13 @@ export default class App extends React.Component {
     }
   }
 
-  addItem = () => {
+  addItem = async () => {
+    try{
+      list = '[]';
+      await AsyncStorage.setItem('todo', list);
+    }catch(error){
+      console.log(error);
+    }
     this._storeData();
   }
 
@@ -86,7 +99,7 @@ export default class App extends React.Component {
             returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {Object.values(this.state.todos).map( todo => <TasksList text={todo}/> )}
+          {Object.values(this.state.todos).map( todo => <TasksList key={todo.id} text={todo.text}/> )}
         </ScrollView>
         </View>
 
