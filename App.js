@@ -1,4 +1,8 @@
 import React from 'react';
+import uuidv1 from 'uuid/v1';
+
+import './ReactotronConfig'
+
 import { 
   AppRegistry, 
   StyleSheet, 
@@ -14,14 +18,48 @@ import TasksList from './components/List'
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {newTodo: ''};
+    this.state = {
+      newTodo: '',
+      dataIsReady: false,
+      todos: {}
+    };
   }
 
   newTodoController = (value) => {
     this.setState({newTodo: value});
   }
 
+  addItem = () => {
+    const { newTodoItem } = this.state;
+
+    if(newTodoItem !== '') {
+      this.setState(prevState => {
+        const ID = uuidv1();
+        const newToDoObject = {
+          [ID]: {
+            id: ID,
+            isCompleted: false,
+            textValue: newTodoItem,
+            createdAt: Date.now()
+          }
+        };
+
+        const newState = {
+          ...prevState,
+          newTodoItem: '',
+          todos: {
+            ...prevState.todos,
+            ...newToDoObject
+          }
+        };
+
+        return {...newState};
+      });
+    }
+  };
+
   render() {
+    const { newTodo, todos } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.appTitle}>To-do app!</Text>
@@ -31,11 +69,11 @@ export default class App extends React.Component {
             placeholder="Add item!"
             value={this.state.newTodo}
             onChangeText={this.newTodoController}
-            returnKeyType={'send'} 
-            
+            returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          <TasksList/>
+          {/* <TasksList text={'newTodo'}/> */}
+          {Object.values(todos).map(todo => <TasksList key={todo.id} {...todo} />)}
         </ScrollView>
         </View>
 
