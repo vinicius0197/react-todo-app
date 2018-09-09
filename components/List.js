@@ -4,8 +4,7 @@ import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
-	Dimensions,
-	Switch
+	Dimensions
 }from 'react-native';
 
 const { heigth, width } = Dimensions.get('window');
@@ -14,15 +13,25 @@ export default class TasksList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isEditing: false
+			isEditing: false,
+			isDone: false,
 		}
+	}
+
+	markTask = () => {
+		this.setState(prevState => {
+			return{
+				isDone: !prevState.isDone
+			}
+		})
 	}
 	
 	render() {
 		return(
 			<View style={styles.container}>
-				<Switch/>
-				<Text style={styles.text}> TO DO </Text>
+				<TouchableOpacity onPress={this.markTask}>
+					<Text style={this.state.isDone ? styles.completeTask : styles.incompleteTask}> TO DO </Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -37,18 +46,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
-	text: {
+	incompleteTask: {
 		fontWeight: '500',
 		fontSize: 18,
 		marginVertical: 20
 	},
 
-	circle: {
-		width: 30,
-		height: 30,
-		borderRadius: 15,
-		borderColor: 'red',
-		borderWidth: 3,
-		marginRight: 20
+	completeTask: {
+		fontWeight: '500',
+		fontSize: 18,
+		marginVertical: 20,
+		color: '#D3D3D3'
 	}
 });
