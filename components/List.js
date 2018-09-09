@@ -16,17 +16,17 @@ export default class TasksList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isEditing: false,
 			isDone: false,
 		}
 	}
 
 	markTask = () => {
+		this.props.check(this.props.id);
 		this.setState(prevState => {
 			return{
 				isDone: !prevState.isDone
 			}
-		})
+		});
 	}
 
 	displayPrompt = () => {

@@ -25,10 +25,23 @@ export default class App extends React.Component {
       todos: [],
       newItem: false,
     };
+    this.checkItems = this.checkItems.bind(this);
   }
 
   newTodoController = (value) => {
     this.setState({newTodoItem: value});
+  }
+
+  checkItems = async (valor) => {
+    let values = await this._loadData();
+    let index = values.findIndex( x => x.id == valor );
+    values[index].completed = !values[index].completed;
+    try{
+      await AsyncStorage.setItem('todo', JSON.stringify(values));
+    } catch(error) {
+      console.log(error);
+    }
+    console.log(values);
   }
 
   _loadData = async () => {
@@ -37,6 +50,8 @@ export default class App extends React.Component {
       const parseData = JSON.parse(getData);
       this.setState({newItem: false});
       this.setState({todos: parseData});
+
+      return parseData;
     }catch(error){
       console.log(error);
     }
@@ -55,10 +70,12 @@ export default class App extends React.Component {
       newObject = {
         id: ID,
         text: this.state.newTodoItem,
+        completed: false,
       }
       parsedPreviousData.push(newObject);
       
-      console.log(parsedPreviousData);
+      // console.log(parsedPreviousData);
+      console.log('worked');
 
       await AsyncStorage.setItem('todo', JSON.stringify(parsedPreviousData));
       this.state.newTodoItem = '';
@@ -107,7 +124,7 @@ export default class App extends React.Component {
             returnKeyType={'send'}
           />
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {Object.values(this.state.todos).map( todo => <TasksList id={todo.id} key={todo.id} text={todo.text} remove={this.removeItem}/> )}
+          {Object.values(this.state.todos).map( todo => <TasksList check={this.checkItems} id={todo.id} key={todo.id} text={todo.text} complete={todo.completed} remove={this.removeItem} load={this._loadData}/> )}
         </ScrollView>
         </View>
 
