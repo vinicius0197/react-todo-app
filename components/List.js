@@ -23,10 +23,11 @@ export default class TasksList extends Component {
 
 	displayPrompt = () => {
 		Alert.alert(
-			'Remove task?',
-			'Do you wish to remove this task?',
+			'Update task',
+			'Do you wish to update this task?',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: 'Update', onPress: () => console.log('update task')},
 				{text: 'Remove', onPress: () => this.props.remove(this.props.id)},
 			],
 			{ cancelable: false }
