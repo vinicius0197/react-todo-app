@@ -26,6 +26,7 @@ export default class App extends React.Component {
       newItem: false,
       updateValue: false,
       onUpdate: false,
+      updateText: '',
     };
     this.checkItems = this.checkItems.bind(this);
   }
@@ -34,15 +35,18 @@ export default class App extends React.Component {
     this.setState({newTodoItem: value});
   }
 
+  newUpdateController = (value) => {
+    this.setState({updateText: value});
+  }
+
   renderUpdateInput = (text) => {
-    console.log(text);
     this.setState({onUpdate: true});
-    console.log('rendering input...');
-    console.log(text);
+    this.setState({updateText: text});
   }
 
   deleteUpdateInput = () => {
     this.setState({onUpdate: false});
+    console.log(this.state.updateText);
   }
 
   checkItems = async (valor) => {
@@ -137,7 +141,7 @@ export default class App extends React.Component {
         />
 
         <View>
-          {this.state.onUpdate ? <TextInput autoFocus={true} />: null}
+          {this.state.onUpdate ? <TextInput autoFocus={true} onChangeText={this.newUpdateController} value={this.state.updateText} onSubmitEditing={this.deleteUpdateInput}/>: null}
         </View>
 
         <ScrollView contentContainerStyle={styles.listContainer}>
