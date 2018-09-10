@@ -27,6 +27,7 @@ export default class App extends React.Component {
       updateValue: false,
       onUpdate: false,
       updateText: '',
+      updateId: '',
     };
     this.checkItems = this.checkItems.bind(this);
   }
@@ -39,13 +40,17 @@ export default class App extends React.Component {
     this.setState({updateText: value});
   }
 
-  renderUpdateInput = (text) => {
+  renderUpdateInput = (id, text) => {
     this.setState({onUpdate: true});
     this.setState({updateText: text});
+    this.setState({updateId: id});
+    console.log(id);
+    console.log(text);
   }
 
   deleteUpdateInput = () => {
     this.setState({onUpdate: false});
+    this._updateData(this.state.updateText);
     console.log(this.state.updateText);
   }
 
@@ -60,6 +65,24 @@ export default class App extends React.Component {
       console.log(error);
     }
     console.log(values);
+  }
+
+  _updateData = async (text) => {
+    let values = await this._loadData();
+    let index = values.findIndex( x => x.id == this.state.updateId);
+    values[index].text = text;
+
+    this.setState({todos: values});
+
+    try{
+      await AsyncStorage.setItem('todo', JSON.stringify(values));
+    } catch(error){
+      console.log(error);
+    }
+
+    this.setState({updateId: ''});
+    this.setState({updateText: ''});
+    console.log('data updated.');
   }
 
   _loadData = async () => {
