@@ -27,7 +27,7 @@ export default class TasksList extends Component {
 			'Do you wish to update this task?',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-				{text: 'Update', onPress: () => console.log('update task')},
+				{text: 'Update', onPress: () => this.props.update()},
 				{text: 'Remove', onPress: () => this.props.remove(this.props.id)},
 			],
 			{ cancelable: false }

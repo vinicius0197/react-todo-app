@@ -25,12 +25,22 @@ export default class App extends React.Component {
       todos: [],
       newItem: false,
       updateValue: false,
+      onUpdate: false,
     };
     this.checkItems = this.checkItems.bind(this);
   }
 
   newTodoController = (value) => {
     this.setState({newTodoItem: value});
+  }
+
+  renderUpdateInput = () => {
+    this.setState({onUpdate: true});
+    console.log('rendering input...');
+  }
+
+  deleteUpdateInput = () => {
+    this.setState({onUpdate: false});
   }
 
   checkItems = async (valor) => {
@@ -114,14 +124,20 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Text style={styles.appTitle}>To-do app!</Text>
         <View style={styles.card}>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Add item!"
-            value={this.state.newTodoItem}
-            onChangeText={this.newTodoController}
-            onSubmitEditing={this.addItem}
-            returnKeyType={'send'}
-          />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Add item!"
+          value={this.state.newTodoItem}
+          onChangeText={this.newTodoController}
+          onSubmitEditing={this.addItem}
+          returnKeyType={'send'}
+        />
+
+        <View>
+          {this.state.onUpdate ? <TextInput autoFocus={true} />: null}
+        </View>
+
         <ScrollView contentContainerStyle={styles.listContainer}>
           {Object.values(this.state.todos).map( todo => <TasksList 
             check={this.checkItems} 
@@ -132,6 +148,7 @@ export default class App extends React.Component {
             complete={todo.completed} 
             remove={this.removeItem} 
             load={this._loadData}
+            update={this.renderUpdateInput}
           /> )}
         </ScrollView>
         </View>
