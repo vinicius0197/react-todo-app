@@ -34,9 +34,11 @@ export default class App extends React.Component {
     this.setState({newTodoItem: value});
   }
 
-  renderUpdateInput = () => {
+  renderUpdateInput = (text) => {
+    console.log(text);
     this.setState({onUpdate: true});
     console.log('rendering input...');
+    console.log(text);
   }
 
   deleteUpdateInput = () => {
@@ -143,8 +145,9 @@ export default class App extends React.Component {
             check={this.checkItems} 
             id={todo.id}
             done={todo.completed}
-            key={todo.id} 
-            text={todo.text} 
+            key={todo.id}
+            text={todo.text}
+            update_text={todo.text}
             complete={todo.completed} 
             remove={this.removeItem} 
             load={this._loadData}
