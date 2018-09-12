@@ -125,10 +125,6 @@ export default class App extends React.Component {
     }
   }
 
-  addItem = () => {
-    this._storeData();
-  }
-
   removeItem = async (item_id) => {
     let todo = this.state.todos;
     let id = todo.findIndex(x => x.id === item_id);
@@ -160,7 +156,7 @@ export default class App extends React.Component {
           placeholder="Add item!"
           value={this.state.newTodoItem}
           onChangeText={this.newTodoController}
-          onSubmitEditing={this.addItem}
+          onSubmitEditing={this._storeData}
           returnKeyType={'send'}
         />
 
