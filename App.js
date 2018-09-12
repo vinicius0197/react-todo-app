@@ -103,28 +103,22 @@ export default class App extends React.Component {
 
   _storeData = async() => {
     try{
-      let previousData;
-      try{
-        previousData = await AsyncStorage.getItem('todo');
-        if(previousData === null) {
-          let list = [];
-          previousData = await AsyncStorage.setItem('todo', JSON.stringify(list));
-        }
-      }catch(error){
-        console.log(error);
+      let previousData = await this._loadData();
+      if(previousData === null) {
+        let list = [];
+        previousData = await AsyncStorage.setItem('todo', JSON.stringify(list));
       }
       const ID = uuidv1();
-      const parsedPreviousData = JSON.parse(previousData);
       newObject = {
         id: ID,
         text: this.state.newTodoItem,
         completed: false,
       }
-      parsedPreviousData.push(newObject);
+      previousData.push(newObject);
 
-      await AsyncStorage.setItem('todo', JSON.stringify(parsedPreviousData));
+      await AsyncStorage.setItem('todo', JSON.stringify(previousData));
       this.state.newTodoItem = '';
-      this.setState({todos: parsedPreviousData});
+      this.setState({todos: previousData});
 
     }catch(error){
       console.log(error);
@@ -151,7 +145,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    // Initialize previous to-do items in list
+    // Calls _loadData to initialize to-do items saved in Async Storage
     this._loadData();
   }
 
