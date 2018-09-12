@@ -161,7 +161,13 @@ export default class App extends React.Component {
         />
 
         <View>
-          {this.state.onUpdate ? <TextInput autoFocus={true} onChangeText={this.newUpdateController} value={this.state.updateText} onSubmitEditing={this.deleteUpdateInput}/>: null}
+          {this.state.onUpdate &&
+            <TextInput
+              autoFocus={true}
+              onChangeText={this.newUpdateController}
+              value={this.state.updateText}
+              onSubmitEditing={this.deleteUpdateInput}/>
+          }
         </View>
 
         <ScrollView contentContainerStyle={styles.listContainer}>
