@@ -88,6 +88,9 @@ export default class App extends React.Component {
   _loadData = async () => {
     try{
       const getData = await AsyncStorage.getItem('todo');
+      if(getData === null) {
+        return "";
+      }
       const parseData = JSON.parse(getData);
       this.setState({newItem: false});
       this.setState({todos: parseData});
@@ -103,6 +106,10 @@ export default class App extends React.Component {
       let previousData;
       try{
         previousData = await AsyncStorage.getItem('todo');
+        if(previousData === null) {
+          let list = [];
+          previousData = await AsyncStorage.setItem('todo', JSON.stringify(list));
+        }
       }catch(error){
         console.log(error);
       }
@@ -168,7 +175,7 @@ export default class App extends React.Component {
         </View>
 
         <ScrollView contentContainerStyle={styles.listContainer}>
-          {Object.values(this.state.todos).map( todo => <TasksList 
+          {this.state.todos && Object.values(this.state.todos).map( todo => <TasksList 
             check={this.checkItems} 
             id={todo.id}
             done={todo.completed}
@@ -181,6 +188,7 @@ export default class App extends React.Component {
             update={this.renderUpdateInput}
           /> )}
         </ScrollView>
+      
         </View>
 
       </View>

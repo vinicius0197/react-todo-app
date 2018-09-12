@@ -1,5 +1,14 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+   "name": "My To-do",
+   "version": "1.0.0",
+   "slug": "my-todo-app",
+   "sdkVersion": "27.0.0",
+   "ios": {
+     "bundleIdentifier": "com.yourcompany.yourappname"
+   },
+   "android": {
+     "package": "com.yourcompany.yourappname"
+   }
   }
 }
