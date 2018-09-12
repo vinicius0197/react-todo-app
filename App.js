@@ -54,9 +54,13 @@ export default class App extends React.Component {
     console.log(this.state.updateText);
   }
 
+  /*
+    @desc Updates the 'completed' field in the to-do Object as true or false
+    @params {valor:string} ID of the element to be updated
+  */
   checkItems = async (valor) => {
     let values = await this._loadData();
-    let index = values.findIndex( x => x.id == valor );
+    let index = values.findIndex( x => x.id === valor );
     values[index].completed = !values[index].completed;
     this.setState({updateValue: true});
     try{
@@ -67,6 +71,10 @@ export default class App extends React.Component {
     console.log(values);
   }
 
+  /*
+    @desc Updates data currently saved in AsyncStorage
+    @params {string} New item to be saved in To-do list
+  */
   _updateData = async (text) => {
     let values = await this._loadData();
     let index = values.findIndex( x => x.id == this.state.updateId);
@@ -85,6 +93,10 @@ export default class App extends React.Component {
     console.log('data updated.');
   }
 
+  /*
+    @desc Loads data currently saved in AsyncStorage
+    @returns {{id:string, text:string, completed:boolean}[]} Array of objects
+  */
   _loadData = async () => {
     try{
       const getData = await AsyncStorage.getItem('todo');
@@ -101,6 +113,9 @@ export default class App extends React.Component {
     }
   }
 
+  /*
+    @desc Appends new to-do item to existing Array and saves it to AsyncStorage
+  */
   _storeData = async() => {
     try{
       let previousData = await this._loadData();
@@ -125,7 +140,11 @@ export default class App extends React.Component {
     }
   }
 
-  removeItem = async (item_id) => {
+  /*
+    @desc Removes item from AsyncStorage and this.state.todos
+    @params {item_id:string} ID from the to-do item to be removed
+  */
+  _removeItem = async (item_id) => {
     let todo = this.state.todos;
     let id = todo.findIndex(x => x.id === item_id);
     todo.splice(id, 1);
@@ -169,7 +188,7 @@ export default class App extends React.Component {
               onSubmitEditing={this.deleteUpdateInput}/>
           }
         </View>
-
+   
         <ScrollView contentContainerStyle={styles.listContainer}>
           {this.state.todos && Object.values(this.state.todos).map( todo => <TasksList 
             check={this.checkItems} 
@@ -179,7 +198,7 @@ export default class App extends React.Component {
             text={todo.text}
             update_text={todo.text}
             complete={todo.completed} 
-            remove={this.removeItem} 
+            remove={this._removeItem} 
             load={this._loadData}
             update={this.renderUpdateInput}
           /> )}
@@ -192,6 +211,9 @@ export default class App extends React.Component {
   }
 }
 
+/*
+  Defines style for App
+*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
